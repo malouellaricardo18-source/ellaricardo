@@ -896,7 +896,7 @@ legend {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -42%);
-  background: url("assets/barangay-logo.png") center / contain no-repeat;
+  background: url("barangay-logo.png") center / contain no-repeat;
   opacity: 0.15;
   pointer-events: none;
   z-index: 0;

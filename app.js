@@ -404,8 +404,8 @@ function renderCertificateOptions(filter = "") {
     document.querySelector("#certificatePreview").classList.remove("word-page");
     document.querySelector("#certificatePreview").innerHTML = `
       <div class="cert-logo-row">
-        <img class="cert-logo" src="assets/municipal-logo.jpeg" alt="Municipal logo" />
-        <img class="cert-logo" src="assets/barangay-logo.png" alt="Barangay logo" />
+        <img class="cert-logo" src="municipal-logo.jpeg" alt="Municipal logo" />
+        <img class="cert-logo" src="barangay-logo.png" alt="Barangay logo" />
       </div>
       <p>Republic of the Philippines</p>
       <h2>Barangay Jurisdiccion</h2>
@@ -449,14 +449,14 @@ function commonHeaderHtml(officeName = "Office of the Punong Barangay") {
   return `
     <div class="cert-header">
       <div class="cert-masthead">
-        <img class="cert-logo" src="assets/municipal-logo.jpeg" alt="Municipal logo" />
+        <img class="cert-logo" src="municipal-logo.jpeg" alt="Municipal logo" />
         <div class="cert-heading-text">
           <p>Republic of the Philippines</p>
           <p>Province of Cagayan</p>
           <p>Municipality of Amulung</p>
           <h2>Barangay Jurisdiccion</h2>
         </div>
-        <img class="cert-logo" src="assets/barangay-logo.png" alt="Barangay logo" />
+        <img class="cert-logo" src="barangay-logo.png" alt="Barangay logo" />
       </div>
       <h3 class="office-line">${escapeHtml(officeName)}</h3>
     </div>
@@ -468,9 +468,9 @@ function fjsHeaderHtml() {
     <div class="fjs-revision">Revised as of 16 June 2021</div>
     <div class="fjs-header">
       <div class="fjs-logo-row">
-        <img class="fjs-logo" src="assets/municipal-logo.jpeg" alt="Municipal logo" />
-        <img class="fjs-bagong-logo" src="assets/BAGONG-PILIPINAS.png" alt="Bagong Pilipinas logo" />
-        <img class="fjs-logo" src="assets/barangay-logo.png" alt="Barangay logo" />
+        <img class="fjs-logo" src="municipal-logo.jpeg" alt="Municipal logo" />
+        <img class="fjs-bagong-logo" src="BAGONG-PILIPINAS.png" alt="Bagong Pilipinas logo" />
+        <img class="fjs-logo" src="barangay-logo.png" alt="Barangay logo" />
       </div>
       <p>Republic of the Philippines</p>
       <p>Province of Cagayan</p>

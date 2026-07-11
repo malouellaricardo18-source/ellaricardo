@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jurisdiccion Citizen Portal</title>
+    <style>
+      :root {
+        --bg: #070c16;
+        --side: #121c31;
+        --panel: #151f35;
+        --panel-2: #0d1525;
+        --line: #263554;
+        --text: #edf4ff;
+        --muted: #8ea0bf;
+        --blue: #3b82f6;
+        --blue-strong: #2563eb;
+        --gold: #f59e0b;
+        --green: #18c29c;
+        --red: #ef4444;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      button, input, select, textarea { font: inherit; }
+
+      .auth-screen {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: minmax(320px, 460px) 1fr;
+        background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.22), transparent 34%), var(--bg);
+      }
+
+      .auth-panel {
+        background: var(--side);
+        border-right: 1px solid var(--line);
+        padding: 34px;
+        display: grid;
+        align-content: center;
+        gap: 22px;
+      }
+
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .brand img {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #fff;
+      }
+
+      .brand strong { display: block; }
+      .brand small, .muted { color: var(--muted); }
+
+      .auth-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--panel-2);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 4px;
+      }
+
+      .auth-tabs button {
+        border: 0;
+        border-radius: 6px;
+        min-height: 40px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-weight: 800;
+      }
+
+      .auth-tabs button.active {
+        background: var(--blue);
+        color: #fff;
+      }
+
+      .auth-form, .portal-form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .auth-title {
+        margin: 0 0 8px;
+      }
+
+      .auth-screen[hidden],
+      .auth-form[hidden],
+      .portal[hidden],
+      .auth-tabs[hidden] {
+        display: none;
+      }
+
+      label {
+        display: grid;
+        gap: 7px;
+        color: #c9d6ee;
+        font-size: 13px;
+      }
+
+      input, select, textarea {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #0a1120;
+        color: var(--text);
+        padding: 9px 11px;
+      }
+
+      textarea { min-height: 96px; resize: vertical; }
+
+      fieldset {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        display: grid;
+        gap: 12px;
+        margin: 0;
+        padding: 14px;
+      }
+
+      legend {
+        color: #dbe7ff;
+        font-weight: 800;
+        padding: 0 6px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .checks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .checks label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .checks input {
+        width: auto;
+        min-height: auto;
+      }
+
+      .button {
+        border: 0;
+        border-radius: 8px;
+        min-height: 42px;
+        padding: 0 16px;
+        background: var(--blue);
+        color: #fff;
+        cursor: pointer;
+        font-weight: 800;
+      }
+
+      .button.secondary {
+        background: #22314f;
+      }
+
+      .text-button {
+        border: 0;
+        background: transparent;
+        color: #93c5fd;
+        cursor: pointer;
+        font-weight: 800;
+        justify-self: start;
+        padding: 0;
+      }
+
+      .message {
+        min-height: 20px;
+        color: #fbbf24;
+        margin: 0;
+        font-size: 13px;
+      }
+
+      .auth-hero {
+        padding: 56px;
+        display: grid;
+        align-content: center;
+      }
+
+      .auth-hero h1 {
+        max-width: 760px;
+        margin: 0;
+        font-size: clamp(38px, 5vw, 68px);
+        line-height: 1;
+      }
+
+      .auth-hero p {
+        max-width: 640px;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 18px;
+      }
+
+      .portal {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+      }
+
+      .sidebar {
+        background: var(--side);
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar .brand {
+        padding: 28px 22px;
+      }
+
+      .nav {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+      }
+
+      .nav button {
+        border: 0;
+        border-radius: 8px;
+        min-height: 46px;
+        background: transparent;
+        color: #b7c6e2;
+        cursor: pointer;
+        text-align: left;
+        padding: 0 16px;
+        font-weight: 700;
+      }
+
+      .nav button.active, .nav button:hover {
+        background: var(--blue);
+        color: #fff;
+      }
+
+      .online {
+        margin-top: auto;
+        border-top: 1px solid var(--line);
+        padding: 18px 22px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .online::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        margin-right: 8px;
+      }
+
+      .main {
+        min-width: 0;
+      }
+
+      .topbar {
+        min-height: 86px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 28px;
+      }
+
+      .topbar h1 {
+        margin: 4px 0 0;
+        font-size: 24px;
+      }
+
+      .eyebrow {
+        color: var(--gold);
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .view {
+        display: none;
+        padding: 28px;
+      }
+
+      .view.active { display: block; }
+
+      .hero {
+        background: linear-gradient(135deg, #2255e6, #2b1b5f);
+        border-radius: 14px;
+        padding: 32px;
+        margin-bottom: 22px;
+      }
+
+      .hero h2 { margin: 0 0 8px; }
+      .hero p { color: #dbe7ff; margin: 0 0 20px; }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+
+      .card, .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .card span, .meta {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .card strong {
+        display: block;
+        margin-top: 10px;
+        font-size: 34px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 16px;
+      }
+
+      .list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .item {
+        background: #0a1120;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+      }
+
+      .item header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .item h3 { margin: 0 0 6px; }
+
+      .tag {
+        border-radius: 999px;
+        display: inline-flex;
+        width: fit-content;
+        padding: 4px 8px;
+        background: #1d2b48;
+        color: #cfe0ff;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .tag.gold { color: #fbbf24; }
+      .tag.green { color: var(--green); }
+      .tag.red { color: #fca5a5; }
+
+      .request-panel {
+        max-width: 640px;
+        margin: 0 auto;
+      }
+
+      .payment-summary {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #0a1120;
+        display: grid;
+        gap: 4px;
+        padding: 14px;
+      }
+
+      .payment-summary span,
+      .payment-summary small {
+        color: var(--muted);
+      }
+
+      .payment-summary strong {
+        font-size: 26px;
+      }
+
+      .gcash-panel {
+        border: 1px solid #2255e6;
+        border-radius: 8px;
+        background: #0a1120;
+        display: grid;
+        grid-template-columns: 1fr 230px;
+        gap: 16px;
+        align-items: center;
+        padding: 14px;
+      }
+
+      .gcash-panel[hidden] {
+        display: none;
+      }
+
+      .gcash-panel p {
+        margin-bottom: 0;
+      }
+
+      .gcash-panel img {
+        width: 230px;
+        height: 230px;
+        border-radius: 8px;
+        background: #fff;
+        object-fit: cover;
+        object-position: center 31%;
+      }
+
+      @media (max-width: 900px) {
+        .auth-screen, .portal, .grid-2 {
+          grid-template-columns: 1fr;
+        }
+
+        .auth-hero { display: none; }
+
+        .sidebar {
+          min-height: auto;
+        }
+
+        .stats, .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .gcash-panel {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="auth-screen" id="authScreen">
+      <div class="auth-panel">
+        <div class="brand">
+          <img src="barangay-logo.png" alt="Barangay logo" />
+          <div>
+            <strong>Jurisdiccion Citizen Portal</strong>
+            <small>Sign in or register your account</small>
+          </div>
+        </div>
+        <div class="auth-tabs">
+          <button class="active" id="showSignIn" type="button">Sign In</button>
+          <button id="showRegister" type="button">Register</button>
+        </div>
+
+        <form class="auth-form" id="signInForm">
+          <label>Email address or mobile number <input name="identifier" required placeholder="Email or 09XX XXX XXXX" /></label>
+          <label>Password <input name="password" type="password" required /></label>
+          <p class="message" id="signInMessage"></p>
+          <button class="button" type="submit">Sign In</button>
+          <button class="text-button" id="showForgotPassword" type="button">Forgot password?</button>
+        </form>
+
+        <form class="auth-form" id="forgotPasswordForm" hidden>
+          <div>
+            <h2 class="auth-title">Reset password</h2>
+            <p class="muted">Enter your registered email or mobile number, then create a new password.</p>
+          </div>
+          <label>Email address or mobile number <input name="identifier" required placeholder="Registered email or mobile number" /></label>
+          <label>New password <input name="password" type="password" required minlength="6" /></label>
+          <label>Confirm new password <input name="confirmPassword" type="password" required minlength="6" /></label>
+          <p class="message" id="forgotPasswordMessage"></p>
+          <button class="button" type="submit">Update Password</button>
+          <button class="text-button" id="backToSignIn" type="button">Back to sign in</button>
+        </form>
+
+        <form class="auth-form" id="registerForm" hidden>
+          <fieldset>
+            <legend>Account information</legend>
+            <div class="form-grid">
+              <label>First name <input name="firstName" required /></label>
+              <label>Middle name <input name="middleName" /></label>
+              <label>Last name <input name="lastName" required /></label>
+              <label>Email address <input name="email" type="email" required /></label>
+              <label>Mobile number <input name="contact" required placeholder="09XX XXX XXXX" /></label>
+              <label>Password <input name="password" type="password" required minlength="6" /></label>
+              <label>Confirm password <input name="confirmPassword" type="password" required minlength="6" /></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Personal information</legend>
+            <div class="form-grid">
+              <label>Birthdate <input id="birthdate" name="birthdate" type="date" required /></label>
+              <label>Age <input id="age" readonly placeholder="Auto-calculated" /></label>
+              <label>Sex <select name="sex" required><option value="">Select sex</option><option>Female</option><option>Male</option></select></label>
+              <label>Civil status <select name="civilStatus" required><option>Single</option><option>Married</option><option>Widowed</option><option>Separated</option></select></label>
+              <label>Nationality <input name="nationality" value="Filipino" required /></label>
+              <label>Occupation <input name="occupation" required /></label>
+              <label>Religion <input name="religion" placeholder="Optional" /></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Address</legend>
+            <div class="form-grid">
+              <label>House no. <input name="houseNo" required /></label>
+              <label>Street <input name="street" required /></label>
+              <label>Purok <input name="purok" required /></label>
+              <label>Barangay <input name="barangay" value="Jurisdiccion" readonly /></label>
+              <label>Municipality <input name="municipality" value="Amulung" readonly /></label>
+              <label>Province <input name="province" value="Cagayan" readonly /></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Identification</legend>
+            <div class="form-grid">
+              <label>Upload valid ID <input name="validId" type="file" accept="image/*,.pdf" required /></label>
+              <label>Selfie with ID <input name="selfieId" type="file" accept="image/*" /></label>
+              <label>Voter status <select name="voterStatus"><option>Registered voter</option><option>Not registered</option></select></label>
+              <label>Voter ID number <input name="voterId" placeholder="Optional" /></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Family information</legend>
+            <div class="form-grid">
+              <label>Household head <input name="householdHead" required /></label>
+              <label>Relationship to household head <input name="relationshipToHead" required /></label>
+              <label>Number of family members <input name="familyMembers" type="number" min="1" value="1" required /></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Special categories</legend>
+            <div class="checks">
+              <label><input type="checkbox" name="senior" /> Senior Citizen</label>
+              <label><input type="checkbox" name="pwd" /> Person with Disability (PWD)</label>
+              <label><input type="checkbox" name="soloParent" /> Solo Parent</label>
+              <label><input type="checkbox" name="farmer" /> Farmer</label>
+              <label><input type="checkbox" name="fisherfolk" /> Fisherfolk</label>
+              <label><input type="checkbox" name="student" /> Student</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Emergency contact</legend>
+            <div class="form-grid">
+              <label>Contact person <input name="emergencyContact" required /></label>
+              <label>Relationship <input name="emergencyRelationship" required /></label>
+              <label>Contact number <input name="emergencyNumber" required /></label>
+            </div>
+          </fieldset>
+          <p class="message" id="registerMessage"></p>
+          <button class="button" type="submit">Register Account</button>
+        </form>
+      </div>
+      <div class="auth-hero">
+        <span class="eyebrow">Barangay Jurisdiccion Amulung Cagayan</span>
+        <h1>Citizen Hub</h1>
+        <p>Create your account, complete your profile, wait for barangay approval, request documents, receive alerts, and track your requests online.</p>
+      </div>
+    </section>
+
+    <section class="portal" id="portal" hidden>
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="barangay-logo.png" alt="Barangay logo" />
+          <div>
+            <strong>Jurisdiccion Portal</strong>
+            <small>Citizen Services</small>
+          </div>
+        </div>
+        <nav class="nav">
+          <button class="active" data-view="dashboard">Dashboard</button>
+          <button data-view="request">Request Certificate</button>
+          <button data-view="requests">My Requests</button>
+          <button data-view="announcements">Announcements</button>
+        </nav>
+        <div class="online">Citizen Portal Online</div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">Barangay Jurisdiccion Amulung Cagayan</span>
+            <h1 id="pageTitle">Citizen Hub</h1>
+          </div>
+          <button class="button secondary" id="signOutBtn" type="button">Sign Out</button>
+        </header>
+
+        <section class="view active" id="dashboard">
+          <div class="hero">
+            <h2 id="welcomeName">Mabuhay!</h2>
+            <p>Request documents, track appointments, and stay updated with Barangay Jurisdiccion announcements.</p>
+            <button class="button" data-jump="request" type="button">Request Document Online</button>
+          </div>
+          <div class="stats">
+            <article class="card"><span>My Active Requests</span><strong id="activeCount">0</strong></article>
+            <article class="card"><span>Ready for Pickup</span><strong id="readyCount">0</strong></article>
+            <article class="card"><span>Account Status</span><strong id="accountStatus">Pending</strong></article>
+          </div>
+          <div class="grid-2">
+            <section class="panel">
+              <h2>Recent Request Status</h2>
+              <div class="list" id="dashboardRequests"></div>
+            </section>
+            <section class="panel">
+              <h2>Barangay Bulletins</h2>
+              <div class="list" id="dashboardAnnouncements"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="request">
+          <section class="panel request-panel">
+            <h2>New Document Request</h2>
+            <form class="portal-form" id="documentRequestForm">
+              <label>Select document type
+                <select name="documentType" id="documentType">
+                  <option value="Barangay Clearance">Barangay Clearance - P75.00</option>
+                  <option value="Certificate">Certificate - P50.00</option>
+                  <option value="RSBSA Certification">RSBSA - P100.00</option>
+                  <option value="First Time Job Seeker">First Time Job Seeker - Free</option>
+                  <option value="Certificate of Oneness">Certificate of Oneness - Free</option>
+                  <option value="Certificate of Residency">Certificate of Residency - P50.00</option>
+                  <option value="Good Moral">Good Moral - P50.00</option>
+                  <option value="Business Clearance">Business Clearance - P100.00</option>
+                </select>
+              </label>
+              <label>Purpose <input name="purpose" required placeholder="Employment, school, assistance, etc." /></label>
+              <label>Payment method
+                <select name="paymentMethod" id="paymentMethod">
+                  <option>Cash on Pickup</option>
+                  <option>GCash</option>
+                </select>
+              </label>
+              <div class="payment-summary">
+                <span>Amount to pay</span>
+                <strong id="requestFee">P75.00</strong>
+                <small id="feeNote"></small>
+              </div>
+              <div class="gcash-panel" id="gcashPanel" hidden>
+                <div>
+                  <strong>Pay through GCash</strong>
+                  <p class="muted">Scan the barangay GCash QR code, then keep your receipt for verification.</p>
+                </div>
+                <img src="gcash-qr.jpg" alt="Barangay GCash QR code" />
+              </div>
+              <button class="button" type="submit">Proceed to Confirm and Request</button>
+            </form>
+          </section>
+        </section>
+
+        <section class="view" id="requests">
+          <section class="panel">
+            <h2>My Requests</h2>
+            <div class="list" id="myRequests"></div>
+          </section>
+        </section>
+
+        <section class="view" id="announcements">
+          <section class="panel">
+            <h2>Announcements</h2>
+            <div class="list" id="announcementList"></div>
+          </section>
+        </section>
+      </main>
+    </section>
+
+    <script>
+      const storageKey = "barangay-data-management-v1";
+      const today = new Date("2026-07-10T00:00:00");
+      let state = loadState();
+      let currentUser = null;
+
+      const authScreen = document.querySelector("#authScreen");
+      const portal = document.querySelector("#portal");
+      const signInForm = document.querySelector("#signInForm");
+      const registerForm = document.querySelector("#registerForm");
+      const forgotPasswordForm = document.querySelector("#forgotPasswordForm");
+      const signInMessage = document.querySelector("#signInMessage");
+      const registerMessage = document.querySelector("#registerMessage");
+      const forgotPasswordMessage = document.querySelector("#forgotPasswordMessage");
+      const birthdate = document.querySelector("#birthdate");
+      const age = document.querySelector("#age");
+      const documentType = document.querySelector("#documentType");
+      const paymentMethod = document.querySelector("#paymentMethod");
+      const requestFee = document.querySelector("#requestFee");
+      const feeNote = document.querySelector("#feeNote");
+      const gcashPanel = document.querySelector("#gcashPanel");
+
+      const documentFees = {
+        "Barangay Clearance": 75,
+        "Certificate": 50,
+        "RSBSA Certification": 100,
+        "First Time Job Seeker": 0,
+        "Certificate of Oneness": 0,
+        "Certificate of Residency": 50,
+        "Good Moral": 50,
+        "Business Clearance": 100
+      };
+
+      function loadState() {
+        const saved = localStorage.getItem(storageKey);
+        const data = saved ? JSON.parse(saved) : {};
+        data.residents ||= [];
+        data.households ||= [];
+        data.cases ||= [];
+        data.portalRegistrations ||= [];
+        data.portalRequests ||= [];
+        data.auditLogs ||= [];
+        data.broadcasts ||= [];
+        data.activity ||= [];
+        return data;
+      }
+
+      function saveState() {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      }
+
+      function addAuditLog(action, actor = "Citizen", source = "Citizen Portal", details = "") {
+        state.auditLogs.unshift({
+          id: Date.now(),
+          timestamp: new Date().toLocaleString(),
+          source,
+          actor,
+          action,
+          details
+        });
+        state.auditLogs = state.auditLogs.slice(0, 300);
+      }
+
+      function refreshState() {
+        state = loadState();
+      }
+
+      function syncPortalState() {
+        refreshState();
+        if (!currentUser) return;
+        const latestUser = findAccountByIdentifier(currentUser.email);
+        if (latestUser) currentUser = latestUser;
+        renderPortal();
+      }
+
+      function normalizePhone(value) {
+        const digits = String(value || "").replace(/\D/g, "");
+        if (!digits) return "";
+        if (digits.startsWith("63") && digits.length === 12) return `0${digits.slice(2)}`;
+        if (digits.startsWith("9") && digits.length === 10) return `0${digits}`;
+        return digits;
+      }
+
+      function normalizeIdentifier(value) {
+        const raw = String(value || "").trim();
+        return {
+          email: raw.toLowerCase(),
+          phone: normalizePhone(raw)
+        };
+      }
+
+      function findAccountByIdentifier(identifier) {
+        const normalized = normalizeIdentifier(identifier);
+        return state.portalRegistrations.find((item) => {
+          const emailMatches = item.email?.trim().toLowerCase() === normalized.email;
+          const phoneMatches = normalized.phone && normalizePhone(item.contact) === normalized.phone;
+          return emailMatches || phoneMatches;
+        });
+      }
+
+      function ageFromBirthdate(value) {
+        const date = new Date(`${value}T00:00:00`);
+        let years = today.getFullYear() - date.getFullYear();
+        const monthDelta = today.getMonth() - date.getMonth();
+        if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < date.getDate())) years -= 1;
+        return years;
+      }
+
+      function fullName(item) {
+        return `${item.firstName} ${item.middleName ? `${item.middleName} ` : ""}${item.lastName}`.trim();
+      }
+
+      function fileToRecord(file) {
+        if (!file) return Promise.resolve(null);
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve({ name: file.name, type: file.type, dataUrl: reader.result });
+          reader.onerror = () => resolve({ name: file.name, type: file.type, dataUrl: "" });
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function switchAuth(mode) {
+        const authTabs = document.querySelector(".auth-tabs");
+        authTabs.hidden = mode === "forgot";
+        document.querySelector("#showSignIn").classList.toggle("active", mode === "signin");
+        document.querySelector("#showRegister").classList.toggle("active", mode === "register");
+        signInForm.hidden = mode !== "signin";
+        registerForm.hidden = mode !== "register";
+        forgotPasswordForm.hidden = mode !== "forgot";
+      }
+
+      function setPortalView(id) {
+        document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === id));
+        document.querySelectorAll(".nav button").forEach((button) => button.classList.toggle("active", button.dataset.view === id));
+        document.querySelector("#pageTitle").textContent = id === "dashboard" ? "Citizen Hub" : id === "request" ? "Request Document" : id === "requests" ? "My Requests" : "Announcements";
+      }
+
+      async function registerCitizen(form) {
+        const values = Object.fromEntries(new FormData(form).entries());
+        if (values.password !== values.confirmPassword) {
+          registerMessage.textContent = "Password and confirm password do not match.";
+          return;
+        }
+        const duplicate = state.portalRegistrations.some((item) => {
+          const sameEmail = item.email.toLowerCase() === values.email.toLowerCase();
+          const samePhone = normalizePhone(item.contact) === normalizePhone(values.contact);
+          return sameEmail || samePhone;
+        });
+        if (duplicate) {
+          registerMessage.textContent = "An account with this email or mobile number already exists.";
+          return;
+        }
+        const validId = await fileToRecord(form.elements.validId.files[0]);
+        const selfieId = await fileToRecord(form.elements.selfieId.files[0]);
+        const categories = [
+          ["senior", "Senior Citizen"],
+          ["pwd", "Person with Disability (PWD)"],
+          ["soloParent", "Solo Parent"],
+          ["farmer", "Farmer"],
+          ["fisherfolk", "Fisherfolk"],
+          ["student", "Student"]
+        ].filter(([key]) => values[key]).map(([, label]) => label);
+        const registration = {
+          id: Date.now(),
+          status: "Pending Verification",
+          submittedAt: new Date().toLocaleString(),
+          firstName: values.firstName,
+          middleName: values.middleName,
+          lastName: values.lastName,
+          email: values.email,
+          contact: values.contact,
+          password: values.password,
+          birthdate: values.birthdate,
+          age: ageFromBirthdate(values.birthdate),
+          sex: values.sex,
+          civilStatus: values.civilStatus,
+          nationality: values.nationality,
+          occupation: values.occupation,
+          religion: values.religion,
+          houseNo: values.houseNo,
+          street: values.street,
+          purok: values.purok,
+          barangay: values.barangay,
+          municipality: values.municipality,
+          province: values.province,
+          address: `${values.houseNo} ${values.street}, ${values.purok}, ${values.barangay}, ${values.municipality}, ${values.province}`,
+          validId,
+          selfieId,
+          voterStatus: values.voterStatus,
+          voterId: values.voterId,
+          householdHead: values.householdHead,
+          relationshipToHead: values.relationshipToHead,
+          familyMembers: values.familyMembers,
+          categories,
+          emergencyContact: values.emergencyContact,
+          emergencyRelationship: values.emergencyRelationship,
+          emergencyNumber: values.emergencyNumber,
+          note: ""
+        };
+        state.portalRegistrations.unshift(registration);
+        state.activity.unshift(`New resident registration submitted by ${fullName(registration)}.`);
+        addAuditLog("Citizen account registered", fullName(registration), "Citizen Portal", registration.email);
+        state.activity = state.activity.slice(0, 5);
+        saveState();
+        form.reset();
+        age.value = "";
+        registerMessage.textContent = "Registration submitted. Status: Pending Verification.";
+        switchAuth("signin");
+        signInMessage.textContent = "Account created. Please wait for barangay approval before signing in.";
+      }
+
+      function signIn(values) {
+        refreshState();
+        const user = findAccountByIdentifier(values.identifier);
+        if (!user || user.password !== values.password) {
+          signInMessage.textContent = "Invalid email/mobile number or password.";
+          return;
+        }
+        if (!user.password) {
+          signInMessage.textContent = "This account has no portal password. Please register again from the Citizen Portal.";
+          return;
+        }
+        if (user.status !== "Approved") {
+          signInMessage.textContent = user.status === "Rejected"
+            ? "Account status: Rejected. Please contact the barangay or register again with corrected information."
+            : `Account status: ${user.status}. Please wait for barangay approval.`;
+          return;
+        }
+        currentUser = user;
+        addAuditLog("Citizen signed in", fullName(user), "Citizen Portal", user.email);
+        saveState();
+        authScreen.hidden = true;
+        portal.hidden = false;
+        renderPortal();
+      }
+
+      function resetPassword(values) {
+        refreshState();
+        if (values.password !== values.confirmPassword) {
+          forgotPasswordMessage.textContent = "New password and confirm password do not match.";
+          return;
+        }
+        const user = findAccountByIdentifier(values.identifier);
+        if (!user) {
+          forgotPasswordMessage.textContent = "No account found with that email or mobile number.";
+          return;
+        }
+        user.password = values.password;
+        addAuditLog("Citizen password reset", fullName(user), "Citizen Portal", user.email);
+        saveState();
+        forgotPasswordForm.reset();
+        forgotPasswordMessage.textContent = "";
+        switchAuth("signin");
+        signInMessage.textContent = "Password updated. You can now sign in.";
+      }
+
+      function myRequests() {
+        if (!currentUser) return [];
+        return state.portalRequests.filter((item) => item.email.toLowerCase() === currentUser.email.toLowerCase());
+      }
+
+      function statusClass(status) {
+        if (status === "Ready for release" || status === "Approved") return "green";
+        if (status === "Rejected") return "red";
+        return "gold";
+      }
+
+      function hasGoodMoralExemption(user) {
+        const categories = user?.categories || [];
+        return categories.includes("Senior Citizen") || categories.includes("Person with Disability (PWD)") || categories.includes("Student");
+      }
+
+      function calculateDocumentFee(type, user = currentUser) {
+        if (type === "Good Moral" && hasGoodMoralExemption(user)) {
+          return {
+            amount: 0,
+            note: "Free for Senior Citizen, PWD, or Student."
+          };
+        }
+        return {
+          amount: documentFees[type] ?? 0,
+          note: ""
+        };
+      }
+
+      function formatFee(amount) {
+        return amount ? `P${amount.toFixed(2)}` : "Free";
+      }
+
+      function updatePaymentSummary() {
+        const fee = calculateDocumentFee(documentType.value);
+        requestFee.textContent = formatFee(fee.amount);
+        feeNote.textContent = fee.note;
+        gcashPanel.hidden = paymentMethod.value !== "GCash" || fee.amount === 0;
+      }
+
+      function renderRequestList(target, requests) {
+        target.innerHTML = requests.length ? requests.map((item) => `
+          <article class="item">
+            <header>
+              <div>
+                <h3>${item.documentType}</h3>
+                <div class="meta">Filed on: ${item.submittedAt} | Payment: ${item.paymentMethod || "Cash on Pickup"} | Amount: ${item.feeLabel || "Not set"}</div>
+              </div>
+              <span class="tag ${statusClass(item.status)}">${item.status}</span>
+            </header>
+            <p class="muted">${item.purpose}</p>
+          </article>
+        `).join("") : "<p class='muted'>No document requests yet.</p>";
+      }
+
+      function renderAnnouncements(target, limit = Infinity) {
+        const broadcasts = state.broadcasts.length ? state.broadcasts : [
+          { type: "Disaster Advisory", title: "Heavy rainfall warning", message: "Residents in low-lying zones are advised to monitor water levels.", date: "2026-07-10" },
+          { type: "Health Campaign", title: "Community wellness reminder", message: "Visit the barangay health station for scheduled checkups.", date: "2026-07-10" }
+        ];
+        target.innerHTML = broadcasts.slice(0, limit).map((item) => `
+          <article class="item">
+            <span class="tag gold">${item.type}</span>
+            <h3>${item.title}</h3>
+            <p>${item.message}</p>
+            <div class="meta">Posted: ${item.date || "Today"}</div>
+          </article>
+        `).join("");
+      }
+
+      function renderPortal() {
+        const requests = myRequests();
+        document.querySelector("#welcomeName").textContent = `Mabuhay, ${currentUser.firstName}!`;
+        document.querySelector("#activeCount").textContent = requests.filter((item) => item.status !== "Ready for release").length;
+        document.querySelector("#readyCount").textContent = requests.filter((item) => item.status === "Ready for release").length;
+        document.querySelector("#accountStatus").textContent = currentUser.status === "Approved" ? "Verified" : currentUser.status;
+        updatePaymentSummary();
+        renderRequestList(document.querySelector("#dashboardRequests"), requests.slice(0, 3));
+        renderRequestList(document.querySelector("#myRequests"), requests);
+        renderAnnouncements(document.querySelector("#dashboardAnnouncements"), 2);
+        renderAnnouncements(document.querySelector("#announcementList"));
+      }
+
+      document.querySelector("#showSignIn").addEventListener("click", () => switchAuth("signin"));
+      document.querySelector("#showRegister").addEventListener("click", () => switchAuth("register"));
+      document.querySelector("#showForgotPassword").addEventListener("click", () => {
+        signInMessage.textContent = "";
+        forgotPasswordMessage.textContent = "";
+        switchAuth("forgot");
+      });
+      document.querySelector("#backToSignIn").addEventListener("click", () => {
+        forgotPasswordMessage.textContent = "";
+        switchAuth("signin");
+      });
+      birthdate.addEventListener("input", () => {
+        age.value = birthdate.value ? ageFromBirthdate(birthdate.value) : "";
+      });
+      registerForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        registerCitizen(registerForm);
+      });
+      signInForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        signIn(Object.fromEntries(new FormData(signInForm).entries()));
+      });
+      forgotPasswordForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        resetPassword(Object.fromEntries(new FormData(forgotPasswordForm).entries()));
+      });
+      window.addEventListener("focus", syncPortalState);
+      window.addEventListener("storage", (event) => {
+        if (event.key === storageKey) syncPortalState();
+      });
+      document.querySelectorAll(".nav button").forEach((button) => {
+        button.addEventListener("click", () => setPortalView(button.dataset.view));
+      });
+      document.querySelectorAll("[data-jump]").forEach((button) => {
+        button.addEventListener("click", () => setPortalView(button.dataset.jump));
+      });
+      documentType.addEventListener("change", updatePaymentSummary);
+      paymentMethod.addEventListener("change", updatePaymentSummary);
+      document.querySelector("#documentRequestForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const values = Object.fromEntries(new FormData(event.currentTarget).entries());
+        const fee = calculateDocumentFee(values.documentType);
+        state.portalRequests.unshift({
+          id: Date.now(),
+          name: fullName(currentUser),
+          email: currentUser.email,
+          documentType: values.documentType,
+          purpose: values.purpose,
+          paymentMethod: values.paymentMethod,
+          feeAmount: fee.amount,
+          feeLabel: formatFee(fee.amount),
+          status: "Submitted",
+          submittedAt: new Date().toLocaleDateString()
+        });
+        state.activity.unshift(`${fullName(currentUser)} requested ${values.documentType} through Citizen Portal.`);
+        addAuditLog("Document request submitted", fullName(currentUser), "Citizen Portal", `${values.documentType} · ${formatFee(fee.amount)} · ${values.paymentMethod}`);
+        state.activity = state.activity.slice(0, 5);
+        saveState();
+        event.currentTarget.reset();
+        renderPortal();
+        setPortalView("requests");
+      });
+      document.querySelector("#signOutBtn").addEventListener("click", () => {
+        addAuditLog("Citizen signed out", fullName(currentUser), "Citizen Portal", currentUser.email);
+        saveState();
+        currentUser = null;
+        portal.hidden = true;
+        authScreen.hidden = false;
+        signInForm.reset();
+        signInMessage.textContent = "";
+        switchAuth("signin");
+      });
+    </script>
+  </body>
+</html>

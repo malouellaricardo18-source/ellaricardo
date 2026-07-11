@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640" role="img" aria-label="Barangay GCash QR placeholder">
+  <rect width="640" height="640" fill="#ffffff"/>
+  <rect x="32" y="32" width="576" height="576" rx="24" fill="#f4f8ff" stroke="#2563eb" stroke-width="10"/>
+  <text x="320" y="108" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700" fill="#0f3f8c">GCash QR</text>
+  <text x="320" y="154" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#4b5d7a">Replace this file with your real QR code</text>
+  <g fill="#101827">
+    <rect x="88" y="192" width="120" height="120"/>
+    <rect x="112" y="216" width="72" height="72" fill="#ffffff"/>
+    <rect x="136" y="240" width="24" height="24"/>
+    <rect x="432" y="192" width="120" height="120"/>
+    <rect x="456" y="216" width="72" height="72" fill="#ffffff"/>
+    <rect x="480" y="240" width="24" height="24"/>
+    <rect x="88" y="432" width="120" height="120"/>
+    <rect x="112" y="456" width="72" height="72" fill="#ffffff"/>
+    <rect x="136" y="480" width="24" height="24"/>
+    <rect x="264" y="208" width="32" height="32"/>
+    <rect x="328" y="208" width="32" height="32"/>
+    <rect x="264" y="272" width="96" height="32"/>
+    <rect x="248" y="352" width="32" height="32"/>
+    <rect x="312" y="336" width="32" height="64"/>
+    <rect x="376" y="352" width="48" height="32"/>
+    <rect x="248" y="432" width="80" height="32"/>
+    <rect x="360" y="432" width="32" height="96"/>
+    <rect x="424" y="424" width="32" height="32"/>
+    <rect x="488" y="392" width="64" height="32"/>
+    <rect x="456" y="488" width="96" height="32"/>
+    <rect x="280" y="520" width="48" height="32"/>
+  </g>
+  <text x="320" y="594" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#4b5d7a">assets/gcash-qr.svg</text>
+</svg>
